@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Client API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #output {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 20px;
+            min-height: 300px;
+            max-height: 500px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>MCP Client API Test</h1>
+    
+    <div>
+        <h2>Server Management</h2>
+        <button onclick="listServers()">List Servers</button>
+        <button onclick="connectAll()">Connect to All Servers</button>
+    </div>
+    
+    <div>
+        <h2>Individual Server</h2>
+        <input type="text" id="serverName" placeholder="Server name">
+        <button onclick="connectToServer()">Connect to Server</button>
+        <button onclick="listTools()">List Tools</button>
+    </div>
+    
+    <h2>Output:</h2>
+    <pre id="output">Results will appear here...</pre>
+    
+    <script>
+        // Helper function to display results
+        function displayOutput(data) {
+            document.getElementById('output').textContent = 
+                typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
+        }
+        
+        // List all servers
+        async function listServers() {
+            try {
+                const response = await fetch('http://localhost:5000/api/mcp/servers');
+                const data = await response.json();
+                displayOutput(data);
+            } catch (error) {
+                displayOutput(`Error: ${error.message}`);
+            }
+        }
+        
+        // Connect to all servers
+        async function connectAll() {
+            try {
+                const response = await fetch('http://localhost:5000/api/mcp/connect-all', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                displayOutput(data);
+            } catch (error) {
+                displayOutput(`Error: ${error.message}`);
+            }
+        }
+        
+        // Connect to a specific server
+        async function connectToServer() {
+            const serverName = document.getElementById('serverName').value;
+            if (!serverName) {
+                displayOutput('Please enter a server name');
+                return;
+            }
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/mcp/connect', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ server: serverName })
+                });
+                const data = await response.json();
+                displayOutput(data);
+            } catch (error) {
+                displayOutput(`Error: ${error.message}`);
+            }
+        }
+        
+        // List tools for a specific server
+        async function listTools() {
+            const serverName = document.getElementById('serverName').value;
+            if (!serverName) {
+                displayOutput('Please enter a server name');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`http://localhost:5000/api/mcp/tools/${serverName}`);
+                const data = await response.json();
+                displayOutput(data);
+            } catch (error) {
+                displayOutput(`Error: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html>

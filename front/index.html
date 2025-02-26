@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Client</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="processing-indicator" style="display: none;"></div>
+
+    <header class="header">
+        <div class="header-logo">
+            <div class="logo-fallback">
+                <!-- 内联SVG备用Logo -->
+                <svg width="38" height="38" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="10" y="10" width="80" height="80" rx="10" fill="#4361ee" />
+                    <text x="50" y="65" font-family="Arial" font-size="45" font-weight="bold" fill="white" text-anchor="middle">M</text>
+                </svg>
+            </div>
+            <span>Model Context Protocol Client</span>
+        </div>
+
+        <div class="header-actions">
+            <button id="toggle-sidebar" class="btn btn-icon">
+                <i class="fas fa-bars"></i>
+            </button>
+            <button id="toggle-tools" class="btn btn-icon">
+                <i class="fas fa-tools"></i>
+            </button>
+            <label for="theme-toggle" class="theme-switch">
+                <input type="checkbox" id="theme-toggle" class="toggle">
+            </label>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="sidebar">
+            <div class="sidebar-content">
+                <h3>Provider Settings</h3>
+                
+                <div class="provider-select-container">
+                    <select id="provider-select" aria-label="AI Provider">
+                        <option value="">Loading providers...</option>
+                    </select>
+                    <select id="model-select" aria-label="AI Model">
+                        <option value="">Select a model</option>
+                    </select>
+                </div>
+
+                <div class="api-key-container">
+                    <label for="api-key">API Key</label>
+                    <div class="api-key-input">
+                        <input type="password" id="api-key" placeholder="Enter API Key">
+                        <button id="save-key" class="btn">Save</button>
+                        <button id="test-key" class="btn">Test</button>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <h3>MCP Tools</h3>
+                <div id="tools-list" class="tools-list-container">
+                    <p class="empty-message">No MCP tools available</p>
+                </div>
+
+                <button id="connect-all-mcp" class="btn primary">Connect to All Servers</button>
+
+                <input type="file" id="config-file" accept=".json" style="display: none;">
+            </div>
+        </div>
+
+        <div class="content">
+            <div id="example-queries" class="example-queries-container">
+                <div class="example-queries-title">Example queries:</div>
+                <!-- Example queries will be added here programmatically -->
+            </div>
+
+            <div id="chat-container" class="chat-container">
+                <div class="welcome-message">
+                    <h2>Welcome to MCP Client</h2>
+                    <p>Select an AI provider and model to start chatting</p>
+                    <p>Load your MCP config to enable additional tools</p>
+                </div>
+            </div>
+
+            <div class="user-input-container">
+                <textarea id="user-input" placeholder="Type your message here..." rows="3"></textarea>
+                <button id="send-message" class="btn primary">
+                    <i class="fas fa-paper-plane"></i> Send
+                </button>
+                <button id="clear-chat" class="btn">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="tools-panel" class="tools-panel">
+            <div class="tools-panel-header">
+                <h3>Active Tools</h3>
+                <button id="close-tools-panel" class="close-tools-panel">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="active-tools">
+                <p class="empty-message">No active tools</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" style="display: none;"></div>
+
+    <!-- Scripts -->
+    <script src="js/providers.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/mcp-tools.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
